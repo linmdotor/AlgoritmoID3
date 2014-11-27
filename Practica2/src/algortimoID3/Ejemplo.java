@@ -1,10 +1,41 @@
 package algortimoID3;
 
+import java.util.ArrayList;
+
 public class Ejemplo {
 
-	//Hacemos una separación entre el ejemplo y el resultado porque así
-	//nos serán más fáciles las comparaciones de resultados.
-	private String ejemplos;
+	//Hacemos una separaciï¿½n entre el ejemplo y el resultado porque asï¿½
+	//nos serï¿½n mï¿½s fï¿½ciles las comparaciones de resultados.
+	//private String ejemplos;
+	ArrayList<String> ejemplo;
+	
 	private boolean resultado;
+	
+	public Ejemplo(String atributos)
+	{
+		String [] arrayAtributos = atributos.split(",");
+		ejemplo = new ArrayList<String>();
+		for (int i = 0;i< arrayAtributos.length;i++ )
+		{
+			ejemplo.add(arrayAtributos[i]);
+		}
+	}
+
+	public ArrayList<String> getEjemplo() {
+		return ejemplo;
+	}
+
+	public void setEjemplo(ArrayList<String> ejemplo) {
+		this.ejemplo = ejemplo;
+	}
+
+	public boolean isResultado() {
+		return resultado;
+	}
+
+	public void setResultado(boolean resultado) {
+		this.resultado = resultado;
+	}
+	
 	
 }

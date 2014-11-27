@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class AlgoritmoID3 {
 
 	/**
-	 * Algoritmo ID3, que se explica en la página 21 de los apuntes "Tema 04 Aprendizaje II"
+	 * Algoritmo ID3, que se explica en la pï¿½gina 21 de los apuntes "Tema 04 Aprendizaje II"
 	 * @param ejemplos
 	 * @param atributos
 	 * @return
@@ -27,15 +27,24 @@ public class AlgoritmoID3 {
 					
 				} else {
 					
-					//seguir el pseudocódigo del algortimo
-					
+					//seguir el pseudocï¿½digo del algortimo
+					/*(1) llamar mejor al elemento a de lista-atributos que minimice mÃ©rito (a)
+					(2) iniciar un Ã¡rbol cuya raÃ­z sea mejor:
+						para cada valor v i de mejor
+						* incluir en ejemplos-restantes los elementos de lista-ejemplos
+						que tengan valor v i del atributo mejor.
+						* dejar en atributos-restantes todos los elementos de lista-atributos
+						excepto mejor.
+						* devolver el valor de:
+						ID3 (ejemplos-restantes, atributos-restantes)
+						(llamada recursiva al algoritmo)*/
 					
 				}
 			} else {
-				System.out.println("La lista de atributos está vacía, no se puede continuar.");
+				System.out.println("La lista de atributos estï¿½ vacï¿½a, no se puede continuar.");
 			}	
 		} else {
-			System.out.println("La lista de ejemplos está vacía, no se puede continuar.");
+			System.out.println("La lista de ejemplos estï¿½ vacï¿½a, no se puede continuar.");
 		}
 		
 		
@@ -46,8 +55,8 @@ public class AlgoritmoID3 {
 
 	/**
 	 * Devuelve TRUE si TODOS los ejemplos tienen resultado POSITIVO
-	 * Se le debe pasar el número de atributos para poder separar el String en partes, 
-	 * 	y quedarse con el último, que será el resultado
+	 * Se le debe pasar el nï¿½mero de atributos para poder separar el String en partes, 
+	 * 	y quedarse con el ï¿½ltimo, que serï¿½ el resultado
 	 * @param ejemplos Ejemplos separados por comas
 	 * @param num_atributos
 	 * @return
@@ -63,8 +72,8 @@ public class AlgoritmoID3 {
 	
 	/**
 	 * Devuelve TRUE si TODOS los ejemplos tienen resultado NEGATIVO
-	 * Se le debe pasar el número de atributos para poder separar el String en partes, 
-	 * 	y quedarse con el último, que será el resultado
+	 * Se le debe pasar el nï¿½mero de atributos para poder separar el String en partes, 
+	 * 	y quedarse con el ï¿½ltimo, que serï¿½ el resultado
 	 * @param ejemplos Ejemplos separados por comas
 	 * @param num_atributos
 	 * @return
