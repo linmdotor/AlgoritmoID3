@@ -27,4 +27,7 @@ public final class Constantes {
 	
 	public static String NO = "no";
 	public static String SI = "si";
+	
+	public static String RUTA_ATRIBUTOS = "documentacion/AtributosJuego.txt";
+	public static String SEPARACION= ",";
 }
