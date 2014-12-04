@@ -28,6 +28,10 @@ public final class Constantes {
 	public static String NO = "no";
 	public static String SI = "si";
 	
+	public static int NEGATIVO = 0;
+	public static int POSITIVO = 1;
+	
 	public static String RUTA_ATRIBUTOS = "documentacion/AtributosJuego.txt";
+	public static String RUTA_JUEGO = "documentacion/Juego.txt";
 	public static String SEPARACION= ",";
 }

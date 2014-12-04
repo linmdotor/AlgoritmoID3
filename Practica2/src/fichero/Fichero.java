@@ -25,7 +25,8 @@ public class Fichero
 	               
 	                	while(br.ready())
 	                	{
-	                		cad = br.readLine();
+	                		cad = cad +br.readLine()+ "\n" ;
+	                		//System.out.println(cad);
 	                	}
 	                    
 	            } catch (FileNotFoundException ex) {
@@ -39,6 +40,11 @@ public class Fichero
 	            	
 	            }
 	        }
-	        return cad.split(Constantes.SEPARACION);
+	        return cad.split("\n");
+	}
+	
+	public String [] dividirLinea(String linea, String separacion)
+	{
+		return linea.split(separacion);
 	}
 }

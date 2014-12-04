@@ -1,6 +1,7 @@
 package algortimoID3;
 
 import java.util.ArrayList;
+import Constantes.Constantes;
 
 public class Ejemplo {
 
@@ -13,7 +14,7 @@ public class Ejemplo {
 	
 	public Ejemplo(String atributos)
 	{
-		String [] arrayAtributos = atributos.split(",");
+		String [] arrayAtributos = atributos.split(Constantes.SEPARACION);
 		ejemplo = new ArrayList<String>();
 		for (int i = 0;i< arrayAtributos.length;i++ )
 		{

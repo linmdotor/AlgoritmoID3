@@ -1,5 +1,7 @@
 package algortimoID3;
 
+import java.util.ArrayList;
+
 import fichero.Fichero;
 import Constantes.Constantes;
 import arbolStackOverflow.TreeNode;
@@ -7,13 +9,33 @@ import arbolStackOverflow.TreeNode;
 public class Principal {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
+		//OBTIENE LOS ATRIBUTOS Y LOS METE EN UN ArrayList
+		ArrayList<String> atributos = new ArrayList<String>();
+		
 		Fichero f = new Fichero();
-		String [] atributos = f.leerFichero(Constantes.RUTA_ATRIBUTOS);
-		for(int i = 0; i < atributos.length;i++)
+		String [] vector_atributos = f.leerFichero(Constantes.RUTA_ATRIBUTOS);
+		String [] atributos_separados = vector_atributos[0].split(Constantes.SEPARACION);
+		for(int i = 0; i < atributos_separados.length;i++)
 		{
-			System.out.println(atributos[i]);
+			atributos.add(atributos_separados[i]);
 		}
+		
+		//OBTIENE LOS EJEMPLOS Y LOS METE EN UN ArrayList
+		ArrayList<Ejemplo> ejemplos = new ArrayList<Ejemplo>();
+		
+		String [] vector_ejemplos = f.leerFichero(Constantes.RUTA_JUEGO);
+		for(int i = 0; i < vector_ejemplos.length;i++)
+		{
+			ejemplos.add(new Ejemplo(vector_ejemplos[i]));
+		}
+		
+
+		new AlgoritmoID3().aprenderID3(ejemplos, atributos);
+		
+		
+		
+		
 		/*
 		TreeNode<String> root = new TreeNode<String>("raiz");
 		{

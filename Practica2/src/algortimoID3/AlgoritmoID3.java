@@ -25,14 +25,32 @@ public class AlgoritmoID3 {
 		{
 			if(!atributos.isEmpty())
 			{
-				if(comprobarPositivos(ejemplos, atributos.size())) //comprobar que todos los ejemplos son true
+				System.out.println(comprobarPositivos(ejemplos));
+				System.out.println(comprobarNegativos(ejemplos));
+				if(comprobarPositivos(ejemplos)) //comprobar que todos los ejemplos son true
 				{
 					resultado = true;
 					
-				} else if(comprobarNegativos(ejemplos, atributos.size())) { //comprobar que todos los ejemplos son false
+				} 
+				else if(comprobarNegativos(ejemplos)) //comprobar que todos los ejemplos son false
+				{ 
 					resultado = false;
 					
-				} else {
+				} 
+				else 
+				{
+					double merito_final = Double.MAX_VALUE;
+					int atributo_seleccionado = -1;
+					
+					for(int i=0; i<atributos.size(); i++)
+					{
+						double mer_aux = merito(atributos.get(i), i, ejemplos);
+						if(mer_aux < merito_final)
+						{
+							merito_final = mer_aux;
+							atributo_seleccionado = i;
+						}
+					}
 					
 					//seguir el pseudocï¿½digo del algortimo
 					/*(1) llamar mejor al elemento a de lista-atributos que minimice mÃ©rito (a)
@@ -47,10 +65,14 @@ public class AlgoritmoID3 {
 						(llamada recursiva al algoritmo)*/
 					
 				}
-			} else {
+			} 
+			else 
+			{
 				System.out.println("La lista de atributos estï¿½ vacï¿½a, no se puede continuar.");
 			}	
-		} else {
+		} 
+		else 
+		{
 			System.out.println("La lista de ejemplos estï¿½ vacï¿½a, no se puede continuar.");
 		}
 		
@@ -59,38 +81,131 @@ public class AlgoritmoID3 {
 	}
 
 
-
+	
 	/**
 	 * Devuelve TRUE si TODOS los ejemplos tienen resultado POSITIVO
-	 * Se le debe pasar el nï¿½mero de atributos para poder separar el String en partes, 
-	 * 	y quedarse con el ï¿½ltimo, que serï¿½ el resultado
 	 * @param ejemplos Ejemplos separados por comas
-	 * @param num_atributos
-	 * @return
 	 */
-	private boolean comprobarPositivos(ArrayList<Ejemplo> ejemplos, int num_atributos) {
-		// TODO Auto-generated method stub
-		for ( Ejemplo ej : ejemplos )
-		{
-			
-		}
-		return false;
-	}
+	private boolean comprobarPositivos(ArrayList<Ejemplo> ejemplos) {
+
+		return comprobar(ejemplos, "no");
+	}	
+	
 	
 	/**
 	 * Devuelve TRUE si TODOS los ejemplos tienen resultado NEGATIVO
-	 * Se le debe pasar el nï¿½mero de atributos para poder separar el String en partes, 
-	 * 	y quedarse con el ï¿½ltimo, que serï¿½ el resultado
 	 * @param ejemplos Ejemplos separados por comas
-	 * @param num_atributos
-	 * @return
 	 */
-	private boolean comprobarNegativos(ArrayList<Ejemplo> ejemplos, int num_atributos) {
-		// TODO Auto-generated method stub
+	private boolean comprobarNegativos(ArrayList<Ejemplo> ejemplos) {
+
+		return comprobar(ejemplos, "si");
+	}	
+	
+	
+	private boolean comprobar(ArrayList<Ejemplo> ejemplos, String valor) {
+
 		for ( Ejemplo ej : ejemplos )
 		{
+			String atributo_si_no = ej.getEjemplo().get(ej.getEjemplo().size()-1);
+			if(atributo_si_no.equalsIgnoreCase(valor))
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	private double merito(String atributo, int numero_atributo, ArrayList<Ejemplo> ejemplos)
+	{
+		//1. HACEMOS UNA LISTA DEL NÚMERO DE OPCIONES DISTINTAS DEL ATRIBUTO
+		ArrayList<String> opciones_atributo = new ArrayList<String>();
+		//añadimos el primer elemento de la lista de ejemplos
+		opciones_atributo.add(ejemplos.get(0).getEjemplo().get(0));
+		
+		for(Ejemplo ej : ejemplos)
+		{
+			boolean igual = false;
+			String opcion = "";
+			for(String opc : opciones_atributo)
+			{
+				if(opc.equalsIgnoreCase(ej.getEjemplo().get(numero_atributo)))
+				{
+					igual = true;
+					opcion = opc;
+				}
+			}
+			if(!igual && !opcion.equalsIgnoreCase(""))
+			{
+				opciones_atributo.add(opcion);
+			}
+		
+		}
+		
+		/*
+		 Almacenamos el número de positivos y negativos de la siguiente forma:
+         A  N P		
+		 xs 2 5
+		 s  3 0
+		 m  5 1
+		 l  6 2
+		 xl 9 3
+		   ...
+		 */
+		int [][] positivos_negativos = new int[opciones_atributo.size()][2]; 
+		
+		
+		//por cada tipo de atributo que sabemos que es distinto, calculamos cuantos son positivos y negativos
+		for(String op : opciones_atributo)
+		{
+			int p = calcularPositivosNegativos(op, numero_atributo, ejemplos, "si");
+			int n = calcularPositivosNegativos(op, numero_atributo, ejemplos, "no");
+			
+			positivos_negativos[opciones_atributo.indexOf(op)][Constantes.POSITIVO] = p;
+			positivos_negativos[opciones_atributo.indexOf(op)][Constantes.NEGATIVO] = n;
+			
+
+			//calculamos la entropía (INFOR)
+			double porcentaje_p = p/(p+n);
+			double porcentaje_n = n/(p+n);
+		
+			//REVISAR A PARTIR DE AQUÍ; QUE LA FORMULA ES UN LIO Y HAY QUE VER
+			//EN LA FORMULA DE ENTROPÍA SI ESTÁ BIEN, MAL O HAY QUE CAMBIAR LOS PORCENTAJES
+			double entropia = -porcentaje_p * Math.log(porcentaje_p)/Math.log(2) - porcentaje_n * Math.log(porcentaje_n)/Math.log(2);
 			
 		}
-		return false;
+		
+		
+		
+
+		
+		
+		
+		
+		return numero_atributo;
+		
+	}
+	
+	
+	
+	private int calcularPositivosNegativos(String opcion_atributo, int numero_atributo,  ArrayList<Ejemplo>ejemplos, String opcion)
+	{
+		int correctos = 0;
+		
+		for(Ejemplo ej : ejemplos)
+		{
+			//si el ejemplo corresponde a la opción, valoramos si es si o no
+			if(ej.getEjemplo().get(numero_atributo).equalsIgnoreCase(opcion_atributo))
+			{
+				String atributo_si_no = ej.getEjemplo().get(ej.getEjemplo().size()-1);
+				if(atributo_si_no.equalsIgnoreCase(opcion))
+				{
+					correctos++;
+				}
+			}
+		}
+		
+		return correctos;
+		
 	}
 }
