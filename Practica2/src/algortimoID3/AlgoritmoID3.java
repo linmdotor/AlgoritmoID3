@@ -14,7 +14,7 @@ public class AlgoritmoID3 {
 	private ArrayList<Ejemplo> reglas = new ArrayList<Ejemplo>();
 	
 	/**
-	 * Algoritmo ID3, que se explica en la pï¿½gina 21 de los apuntes "Tema 04 Aprendizaje II"
+	 * Algoritmo ID3, que se explica en la página 21 de los apuntes "Tema 04 Aprendizaje II"
 	 * @param ejemplos
 	 * @param atributos
 	 * @return
@@ -27,30 +27,30 @@ public class AlgoritmoID3 {
 		{
 			if(!atributos.isEmpty())
 			{
-				if(comprobarPositivos(ejemplos)) //comprobar que todos los ejemplos son true
+				if(comprobarPositivos(ejemplos)) //cuando el resultado de todos los ejemplos es "si"
 				{
 					for(int i =0;i<nivel;i++)
 						System.out.print(" ");
-					System.out.println("TODOS son +");
-					//pone a negativo y almacena en el array de reglas
+					System.out.println("TODOS son '+'");
+					//pone a negativo el resultado y almacena en el array de reglas
 					regla.setResultado(true);	
 					reglas.add(regla);
 				} 
-				else if(comprobarNegativos(ejemplos)) //comprobar que todos los ejemplos son false
+				else if(comprobarNegativos(ejemplos)) //cuando el resultado de todos los ejemplos es "no"
 				{ 
 					for(int i =0;i<nivel;i++)
 						System.out.print(" ");
-					System.out.println("TODOS son -");
-					//pone a positivo y almacena en el array de reglas
+					System.out.println("TODOS son '-'");
+					//pone a positivo el resultado y almacena en el array de reglas
 					regla.setResultado(false);
 					reglas.add(regla);
 				} 
-				else 
+				else //cuando hay resultados "si" y "no"
 				{
 					double merito_final = Double.MAX_VALUE;
 					int atributo_seleccionado = -1;
 					
-					for(int i=0; i<atributos.size()-1; i++)
+					for(int i=0; i<atributos.size()-1; i++) //hallamos el atributo con menor mérito
 					{
 						double mer_aux = merito(i, ejemplos);
 						//System.out.println("MERITO DE " + atributos.get(i) + ": " + mer_aux);
@@ -65,13 +65,13 @@ public class AlgoritmoID3 {
 						System.out.print(" ");
 					System.out.println("ATRIBUTO SELECCIONADO: " + atributos.get(atributo_seleccionado));
 					
-					//miramos cuantas opciones hay, para llamar a la recursión de cada una
+					//miramos cuantas opciones hay de ese atributo, para llamar a la recursión de cada una
 					ArrayList<String> opciones_atributo = calcularOpcionesDistintas(atributo_seleccionado, ejemplos);
 					
-					
+					//por cada opción distinta
 					for(String op : opciones_atributo)	
 					{
-						//crearse una lista distinta, para cada opcion distinta
+						//crearse una lista distinta
 						ArrayList<Ejemplo> ejemplos_aux = new ArrayList<Ejemplo>();
 						
 						//añadimos el ejemplo (fila) si coincide con la opción actual
@@ -79,13 +79,14 @@ public class AlgoritmoID3 {
 						{
 							if(ej.getEjemplo().get(atributo_seleccionado).equalsIgnoreCase(op))
 							{
+								//pero quitando la columna del atributo actual
 								ej.quitarAtributo(atributo_seleccionado);
 								ejemplos_aux.add(ej);
 							}
 						}
 						for(int i =0;i<nivel;i++)
 							System.out.print(" ");	
-						System.out.println(op + "- ");
+						System.out.println(op + " -> ");
 						
 						//Imprimimos cada una de las tablas intermedias
 						/*System.out.println("TABLA NUEVA de -" + op + "- para la RECURSIÓN ");
@@ -98,9 +99,12 @@ public class AlgoritmoID3 {
 						}
 						System.out.println("------------------");*/
 						
-						//llamar a la recursión, con la lista reducida de esa opción
+						
+						
+						//llamamos a la recursión, con la lista reducida de esa opción
 						// ¡¡¡SIN LA COLUMNA DEL ATRIBUTO SELECCCCCCIONADO!!!
-						//modificamos la regla
+						
+						//modificamos la regla que estamos creando
 						Ejemplo regla_aux = (Ejemplo)regla.clone();
 						int indice_original_atributo_seleccionado = calcularIndiceAtributo(atributos.get(atributo_seleccionado), atributos_originales);
 						regla_aux.ejemplo.remove(indice_original_atributo_seleccionado);
@@ -116,12 +120,12 @@ public class AlgoritmoID3 {
 			} 
 			else 
 			{
-				System.out.println("La lista de atributos estï¿½ vacï¿½a, no se puede continuar.");
+				System.out.println("La lista de atributos está vacía, no se puede continuar.");
 			}	
 		} 
 		else 
 		{
-			System.out.println("La lista de ejemplos estï¿½ vacï¿½a, no se puede continuar.");
+			System.out.println("La lista de ejemplos está vacía, no se puede continuar.");
 		}
 		
 		
@@ -129,8 +133,11 @@ public class AlgoritmoID3 {
 	}
 
 
-	/*
-	 * Devuelve la posición en la que se encuentra un atributo dentro de un Array
+	/**
+	 * Devuelve la posición en la que se encuentra un atributo dentro de un determinado Array
+	 * @param atributo
+	 * @param atributos_originales
+	 * @return
 	 */
 	private int calcularIndiceAtributo(String atributo, ArrayList<String> atributos_originales) {
 		int indice_final = 0;
@@ -180,6 +187,14 @@ public class AlgoritmoID3 {
 		return true;
 	}
 	
+	
+	/**
+	 * Cálculo del mérito de un atributo
+	 * Se realiza calculando la entropía de cada opción distinta de ese atributo
+	 * @param numero_atributo
+	 * @param ejemplos
+	 * @return
+	 */
 	private double merito(int numero_atributo, ArrayList<Ejemplo> ejemplos)
 	{
 		
@@ -188,12 +203,12 @@ public class AlgoritmoID3 {
 		
 		/*
 		 Almacenamos el número de positivos y negativos de la siguiente forma:
-         A  N P		
-		 xs 2 5
-		 s  3 0
-		 m  5 1
-		 l  6 2
-		 xl 9 3
+         ATIBUTO  Neg	Pos		
+		 xs 		2	5
+		 s  		3	0
+		 m  		5	1
+		 l  		6	2
+		 xl 		9	3
 		   ...
 		 */
 		int [][] positivos_negativos = new int[opciones_atributo.size()][2]; 
@@ -209,13 +224,13 @@ public class AlgoritmoID3 {
 			positivos_negativos[opciones_atributo.indexOf(op)][Constantes.NEGATIVO] = n;
 			
 
-			//calculamos la entropía (INFOR)
+			//calculamos la entropía (INFOR) de la opción actual
 
 			double porcentaje_p = (double)p/(double)(p+n);
 			double porcentaje_n = (double)n/(double)(p+n);
 
 			//Tomammoen en cuenta la excepción de calcular un infor(p,n) en el que p o n sean 0
-			//Como no se puede calcular el logaritmo de 0, decirmos que infor, por defecto es 0
+			//Como no se puede calcular el logaritmo de 0, decirmos que infor por defecto es 0
 			if(porcentaje_p != 0 && porcentaje_n != 0)
 			{
 				infor[opciones_atributo.indexOf(op)] = -porcentaje_p * Math.log(porcentaje_p)/Math.log(2) - porcentaje_n * Math.log(porcentaje_n)/Math.log(2);

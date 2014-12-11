@@ -6,19 +6,18 @@ import Constantes.Constantes;
 
 public class Ejemplo implements Cloneable{
 
-	//Hacemos una separaciï¿½n entre el ejemplo y el resultado porque asï¿½
-	//nos serï¿½n mï¿½s fï¿½ciles las comparaciones de resultados.
-	//private String ejemplos;
-	ArrayList<String> ejemplo;
-	
+	//Hacemos una separación entre el ejemplo y el resultado porque así
+	//nos serán más fáciles las comparaciones de resultados.
+
+	ArrayList<String> ejemplo;	
 	private boolean resultado;
 	
 	/*
-	 * Inicializa un jeemplo mediante un String con sus atributos
+	 * Inicializa un ejemplo mediante un String con sus atributos (separados por DELIMITADOR)
 	 */
 	public Ejemplo(String atributos)
 	{
-		String [] arrayAtributos = atributos.split(Constantes.SEPARACION);
+		String [] arrayAtributos = atributos.split(Constantes.DELIMITADOR);
 		ejemplo = new ArrayList<String>();
 		for (int i = 0;i< arrayAtributos.length;i++ )
 		{
@@ -51,6 +50,16 @@ public class Ejemplo implements Cloneable{
 		this.resultado = ej.resultado;
 		
 	}
+	
+	public Ejemplo clone()
+	{
+		return new Ejemplo(this);
+	}
+	
+	public void quitarAtributo(int num_atributo)
+	{
+		ejemplo.remove(num_atributo);
+	}
 
 	public ArrayList<String> getEjemplo() {
 		return ejemplo;
@@ -66,15 +75,6 @@ public class Ejemplo implements Cloneable{
 
 	public void setResultado(boolean resultado) {
 		this.resultado = resultado;
-	}
+	}	
 	
-	public void quitarAtributo(int num_atributo)
-	{
-		ejemplo.remove(num_atributo);
-	}
-	
-	public Ejemplo clone()
-	{
-		return new Ejemplo(this);
-	}
 }

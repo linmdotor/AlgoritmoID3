@@ -13,8 +13,7 @@ public class Fichero
 
 	public String [] leerFichero(String ruta)
 	{
-		//cargamos los atributos
-		
+		//cargamos los atributos		
 		 String cad = "";
 	       File fichIn = new File(ruta);  
 	        if(fichIn != null){
@@ -30,9 +29,9 @@ public class Fichero
 	                	}
 	                    
 	            } catch (FileNotFoundException ex) {
-	                //Logger.getLogger(VentanaRangoVisual.class.getName()).log(Level.SEVERE, null, ex);
+
 	            } catch (IOException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				} 
 	            finally
