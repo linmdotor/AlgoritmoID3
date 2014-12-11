@@ -42,7 +42,7 @@ public class AlgoritmoID3 {
 					double merito_final = Double.MAX_VALUE;
 					int atributo_seleccionado = -1;
 					
-					for(int i=0; i<atributos.size(); i++)
+					for(int i=0; i<atributos.size()-1; i++)
 					{
 						double mer_aux = merito(atributos.get(i), i, ejemplos);
 						if(mer_aux < merito_final)
@@ -121,7 +121,7 @@ public class AlgoritmoID3 {
 		//1. HACEMOS UNA LISTA DEL NÚMERO DE OPCIONES DISTINTAS DEL ATRIBUTO
 		ArrayList<String> opciones_atributo = new ArrayList<String>();
 		//añadimos el primer elemento de la lista de ejemplos
-		opciones_atributo.add(ejemplos.get(0).getEjemplo().get(0));
+		opciones_atributo.add(ejemplos.get(0).getEjemplo().get(numero_atributo));
 		
 		for(Ejemplo ej : ejemplos)
 		{
@@ -133,6 +133,10 @@ public class AlgoritmoID3 {
 				{
 					igual = true;
 					opcion = opc;
+				}
+				else
+				{
+					opcion = ej.getEjemplo().get(numero_atributo);
 				}
 			}
 			if(!igual && !opcion.equalsIgnoreCase(""))
@@ -154,9 +158,9 @@ public class AlgoritmoID3 {
 		 */
 		int [][] positivos_negativos = new int[opciones_atributo.size()][2]; 
 		
-		
+
 		//por cada tipo de atributo que sabemos que es distinto, calculamos cuantos son positivos y negativos
-		for(String op : opciones_atributo)
+		for(String op : opciones_atributo)	
 		{
 			int p = calcularPositivosNegativos(op, numero_atributo, ejemplos, "si");
 			int n = calcularPositivosNegativos(op, numero_atributo, ejemplos, "no");
@@ -166,12 +170,15 @@ public class AlgoritmoID3 {
 			
 
 			//calculamos la entropía (INFOR)
+
 			double porcentaje_p = p/(p+n);
 			double porcentaje_n = n/(p+n);
 		
 			//REVISAR A PARTIR DE AQUÍ; QUE LA FORMULA ES UN LIO Y HAY QUE VER
 			//EN LA FORMULA DE ENTROPÍA SI ESTÁ BIEN, MAL O HAY QUE CAMBIAR LOS PORCENTAJES
 			double entropia = -porcentaje_p * Math.log(porcentaje_p)/Math.log(2) - porcentaje_n * Math.log(porcentaje_n)/Math.log(2);
+			
+			
 			
 		}
 		
