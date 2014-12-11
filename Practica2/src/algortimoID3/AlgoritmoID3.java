@@ -25,8 +25,6 @@ public class AlgoritmoID3 {
 		{
 			if(!atributos.isEmpty())
 			{
-				System.out.println(comprobarPositivos(ejemplos));
-				System.out.println(comprobarNegativos(ejemplos));
 				if(comprobarPositivos(ejemplos)) //comprobar que todos los ejemplos son true
 				{
 					resultado = true;
@@ -45,12 +43,16 @@ public class AlgoritmoID3 {
 					for(int i=0; i<atributos.size()-1; i++)
 					{
 						double mer_aux = merito(atributos.get(i), i, ejemplos);
+						System.out.println("MERITO DE " + atributos.get(i) + ": " + mer_aux);
 						if(mer_aux < merito_final)
 						{
 							merito_final = mer_aux;
 							atributo_seleccionado = i;
 						}
 					}
+					
+					System.out.println("ATRIBUTO SELECCIONADO: " + atributos.get(atributo_seleccionado) + ", merito: " + merito_final);
+					
 					
 					//seguir el pseudocï¿½digo del algortimo
 					/*(1) llamar mejor al elemento a de lista-atributos que minimice mÃ©rito (a)
@@ -157,7 +159,7 @@ public class AlgoritmoID3 {
 		   ...
 		 */
 		int [][] positivos_negativos = new int[opciones_atributo.size()][2]; 
-		
+		double [] infor = new double[opciones_atributo.size()];
 
 		//por cada tipo de atributo que sabemos que es distinto, calculamos cuantos son positivos y negativos
 		for(String op : opciones_atributo)	
@@ -171,25 +173,30 @@ public class AlgoritmoID3 {
 
 			//calculamos la entropía (INFOR)
 
-			double porcentaje_p = p/(p+n);
-			double porcentaje_n = n/(p+n);
-		
-			//REVISAR A PARTIR DE AQUÍ; QUE LA FORMULA ES UN LIO Y HAY QUE VER
-			//EN LA FORMULA DE ENTROPÍA SI ESTÁ BIEN, MAL O HAY QUE CAMBIAR LOS PORCENTAJES
-			double entropia = -porcentaje_p * Math.log(porcentaje_p)/Math.log(2) - porcentaje_n * Math.log(porcentaje_n)/Math.log(2);
-			
-			
-			
+			double porcentaje_p = (double)p/(double)(p+n);
+			double porcentaje_n = (double)n/(double)(p+n);
+
+			//Tomammoen en cuenta la excepción de calcular un infor(p,n) en el que p o n sean 0
+			//Como no se puede calcular el logaritmo de 0, decirmos que infor, por defecto es 0
+			if(porcentaje_p != 0 && porcentaje_n != 0)
+			{
+				infor[opciones_atributo.indexOf(op)] = -porcentaje_p * Math.log(porcentaje_p)/Math.log(2) - porcentaje_n * Math.log(porcentaje_n)/Math.log(2);
+				
+			}
+			else
+			{
+				infor[opciones_atributo.indexOf(op)] = 0;
+			}
 		}
 		
+		double merito = 0;
+		for(String op : opciones_atributo)	
+		{
+			int num_elementos_opcion = positivos_negativos[opciones_atributo.indexOf(op)][Constantes.POSITIVO] + positivos_negativos[opciones_atributo.indexOf(op)][Constantes.NEGATIVO];
+			merito = merito + (((double)num_elementos_opcion/(double)ejemplos.size()) * infor[opciones_atributo.indexOf(op)]);				
+		}
 		
-		
-
-		
-		
-		
-		
-		return numero_atributo;
+		return merito;
 		
 	}
 	
