@@ -284,11 +284,13 @@ public class AlgoritmoID3 {
 		//valoramos regla por regla
 		for(Ejemplo reg : reglas)
 		{	
+			System.out.println(reg.getEjemplo().get(0) + ", " + reg.getEjemplo().get(1) + ", " +reg.getEjemplo().get(2) + ", " +reg.getEjemplo().get(3) + ", " + reg.isResultado());
 			boolean todos_coinciden = true;
 			int indice_atributo = 0;
 			//cada uno de los atributos debe coincidir
 			for(String atrib : reg.ejemplo)
 			{
+				//System.out.println(atrib);
 				if(!ejemplo.getEjemplo().get(indice_atributo).equalsIgnoreCase("-"))
 				{
 					if( !ejemplo.getEjemplo().get(indice_atributo).equalsIgnoreCase(atrib))

@@ -29,7 +29,6 @@ public class Principal {
 		{
 			ejemplos.add(new Ejemplo(vector_ejemplos[i]));
 		}
-		
 
 		AlgoritmoID3 clasificacion = new AlgoritmoID3();
 		clasificacion.aprenderID3(ejemplos, atributos, 0, new Ejemplo(atributos_separados.length-1));
