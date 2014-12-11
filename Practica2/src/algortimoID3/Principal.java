@@ -31,7 +31,12 @@ public class Principal {
 		}
 		
 
-		new AlgoritmoID3().aprenderID3(ejemplos, atributos, 0);
+		AlgoritmoID3 clasificacion = new AlgoritmoID3();
+		clasificacion.aprenderID3(ejemplos, atributos, 0, new Ejemplo(atributos_separados.length-1));
+
+		Ejemplo ejemploConcreto = new Ejemplo("lluvioso,templado,alta,verdad,??");
+		clasificacion.resuelve(ejemploConcreto);
+		
 		
 		
 		

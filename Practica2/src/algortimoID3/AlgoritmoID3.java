@@ -11,13 +11,15 @@ import java.util.logging.Logger;
 import Constantes.*;
 public class AlgoritmoID3 {
 
+	private ArrayList<Ejemplo> reglas = new ArrayList<Ejemplo>();
+	
 	/**
 	 * Algoritmo ID3, que se explica en la pï¿½gina 21 de los apuntes "Tema 04 Aprendizaje II"
 	 * @param ejemplos
 	 * @param atributos
 	 * @return
 	 */
-	public boolean aprenderID3(ArrayList<Ejemplo> ejemplos, ArrayList<String> atributos, int nivel)
+	public boolean aprenderID3(ArrayList<Ejemplo> ejemplos, ArrayList<String> atributos, int nivel, Ejemplo regla)
 	{
 		boolean resultado = false;
 		
@@ -30,14 +32,18 @@ public class AlgoritmoID3 {
 					for(int i =0;i<nivel;i++)
 						System.out.print(" ");
 					System.out.println("TODOS +");
-					resultado = true;				
+					//pone a negativo y almacena en el array de reglas
+					regla.setResultado(true);	
+					reglas.add(regla);
 				} 
 				else if(comprobarNegativos(ejemplos)) //comprobar que todos los ejemplos son false
 				{ 
 					for(int i =0;i<nivel;i++)
 						System.out.print(" ");
 					System.out.println("TODOS -");
-					resultado = true;
+					//pone a positivo y almacena en el array de reglas
+					regla.setResultado(false);
+					reglas.add(regla);
 				} 
 				else 
 				{
@@ -94,9 +100,13 @@ public class AlgoritmoID3 {
 						
 						//llamar a la recursión, con la lista reducida de esa opción
 						// ¡¡¡SIN LA COLUMNA DEL ATRIBUTO SELECCCCCCIONADO!!!
+						Ejemplo regla_aux = (Ejemplo)regla.clone();
+						regla_aux.ejemplo.remove(atributo_seleccionado);
+						regla_aux.ejemplo.add(atributo_seleccionado, op);
+						
 						ArrayList<String> atributos_aux = (ArrayList<String>)atributos.clone();
 						atributos_aux.remove(atributo_seleccionado);
-						aprenderID3(ejemplos_aux, atributos_aux, nivel+5);
+						aprenderID3(ejemplos_aux, atributos_aux, nivel+5, regla_aux);
 					}
 					
 				}
@@ -264,6 +274,42 @@ public class AlgoritmoID3 {
 		}
 		
 		return correctos;
+		
+	}
+
+
+
+	public boolean resuelve(Ejemplo ejemplo)
+	{
+		//valoramos regla por regla
+		for(Ejemplo reg : reglas)
+		{	
+			boolean todos_coinciden = true;
+			int indice_atributo = 0;
+			//cada uno de los atributos debe coincidir
+			for(String atrib : reg.ejemplo)
+			{
+				if(!ejemplo.getEjemplo().get(indice_atributo).equalsIgnoreCase("-"))
+				{
+					if( !ejemplo.getEjemplo().get(indice_atributo).equalsIgnoreCase(atrib))
+					{
+						//no todos coinciden, así que tiene que ser otra regla
+						todos_coinciden = false;
+					}
+				}
+				
+				indice_atributo++;
+			}
+			
+			if(todos_coinciden)
+			{
+				return reg.isResultado();
+			}
+			
+		}
+		
+		System.out.println("EL EJEMPLO NO COINCIDE CON NINGUNA REGLA. NO SE PUEDE CLASIFICAR.");
+		return false;
 		
 	}
 }

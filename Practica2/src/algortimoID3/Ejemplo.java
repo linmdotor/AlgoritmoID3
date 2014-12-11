@@ -1,9 +1,10 @@
 package algortimoID3;
 
 import java.util.ArrayList;
+
 import Constantes.Constantes;
 
-public class Ejemplo {
+public class Ejemplo implements Cloneable{
 
 	//Hacemos una separaci�n entre el ejemplo y el resultado porque as�
 	//nos ser�n m�s f�ciles las comparaciones de resultados.
@@ -12,6 +13,9 @@ public class Ejemplo {
 	
 	private boolean resultado;
 	
+	/*
+	 * Inicializa un jeemplo mediante un String con sus atributos
+	 */
 	public Ejemplo(String atributos)
 	{
 		String [] arrayAtributos = atributos.split(Constantes.SEPARACION);
@@ -20,6 +24,32 @@ public class Ejemplo {
 		{
 			ejemplo.add(arrayAtributos[i]);
 		}
+	}
+	
+	/*
+	 * Crea un ejemplo inicializado a "cero" con guiones
+	 */
+	public Ejemplo(int num_atributos)
+	{
+		ejemplo = new ArrayList<String>();
+		for (int i = 0; i<num_atributos; i++ )
+		{
+			ejemplo.add("-");
+		}
+	}
+	
+	/*
+	 * constructor por copia
+	 */
+	public Ejemplo(Ejemplo ej)
+	{
+		this.ejemplo = new ArrayList<String>();
+		for(String atr : ej.ejemplo)
+		{
+			this.ejemplo.add(atr);
+		}
+		this.resultado = ej.resultado;
+		
 	}
 
 	public ArrayList<String> getEjemplo() {
@@ -43,5 +73,8 @@ public class Ejemplo {
 		ejemplo.remove(num_atributo);
 	}
 	
-	
+	public Ejemplo clone()
+	{
+		return new Ejemplo(this);
+	}
 }
