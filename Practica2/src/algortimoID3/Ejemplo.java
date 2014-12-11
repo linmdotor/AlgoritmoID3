@@ -38,5 +38,10 @@ public class Ejemplo {
 		this.resultado = resultado;
 	}
 	
+	public void quitarAtributo(int num_atributo)
+	{
+		ejemplo.remove(num_atributo);
+	}
+	
 	
 }

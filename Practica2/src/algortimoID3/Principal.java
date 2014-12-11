@@ -31,7 +31,7 @@ public class Principal {
 		}
 		
 
-		new AlgoritmoID3().aprenderID3(ejemplos, atributos);
+		new AlgoritmoID3().aprenderID3(ejemplos, atributos, 0);
 		
 		
 		

@@ -17,7 +17,7 @@ public class AlgoritmoID3 {
 	 * @param atributos
 	 * @return
 	 */
-	public boolean aprenderID3(ArrayList<Ejemplo> ejemplos, ArrayList<String> atributos)
+	public boolean aprenderID3(ArrayList<Ejemplo> ejemplos, ArrayList<String> atributos, int nivel)
 	{
 		boolean resultado = false;
 		
@@ -27,13 +27,17 @@ public class AlgoritmoID3 {
 			{
 				if(comprobarPositivos(ejemplos)) //comprobar que todos los ejemplos son true
 				{
-					resultado = true;
-					
+					for(int i =0;i<nivel;i++)
+						System.out.print(" ");
+					System.out.println("TODOS +");
+					resultado = true;				
 				} 
 				else if(comprobarNegativos(ejemplos)) //comprobar que todos los ejemplos son false
 				{ 
-					resultado = false;
-					
+					for(int i =0;i<nivel;i++)
+						System.out.print(" ");
+					System.out.println("TODOS -");
+					resultado = true;
 				} 
 				else 
 				{
@@ -42,8 +46,8 @@ public class AlgoritmoID3 {
 					
 					for(int i=0; i<atributos.size()-1; i++)
 					{
-						double mer_aux = merito(atributos.get(i), i, ejemplos);
-						System.out.println("MERITO DE " + atributos.get(i) + ": " + mer_aux);
+						double mer_aux = merito(i, ejemplos);
+						//System.out.println("MERITO DE " + atributos.get(i) + ": " + mer_aux);
 						if(mer_aux < merito_final)
 						{
 							merito_final = mer_aux;
@@ -51,20 +55,49 @@ public class AlgoritmoID3 {
 						}
 					}
 					
-					System.out.println("ATRIBUTO SELECCIONADO: " + atributos.get(atributo_seleccionado) + ", merito: " + merito_final);
+					for(int i =0;i<nivel;i++)
+						System.out.print(" ");
+					System.out.println("ATRIBUTO SELECCIONADO: " + atributos.get(atributo_seleccionado));
+					
+					//miramos cuantas opciones hay, para llamar a la recursión de cada una
+					ArrayList<String> opciones_atributo = calcularOpcionesDistintas(atributo_seleccionado, ejemplos);
 					
 					
-					//seguir el pseudocï¿½digo del algortimo
-					/*(1) llamar mejor al elemento a de lista-atributos que minimice mÃ©rito (a)
-					(2) iniciar un Ã¡rbol cuya raÃ­z sea mejor:
-						para cada valor v i de mejor
-						* incluir en ejemplos-restantes los elementos de lista-ejemplos
-						que tengan valor v i del atributo mejor.
-						* dejar en atributos-restantes todos los elementos de lista-atributos
-						excepto mejor.
-						* devolver el valor de:
-						ID3 (ejemplos-restantes, atributos-restantes)
-						(llamada recursiva al algoritmo)*/
+					for(String op : opciones_atributo)	
+					{
+						//crearse una lista distinta, para cada opcion distinta
+						ArrayList<Ejemplo> ejemplos_aux = new ArrayList<Ejemplo>();
+						
+						//añadimos el ejemplo (fila) si coincide con la opción actual
+						for(Ejemplo ej : ejemplos)
+						{
+							if(ej.getEjemplo().get(atributo_seleccionado).equalsIgnoreCase(op))
+							{
+								ej.quitarAtributo(atributo_seleccionado);
+								ejemplos_aux.add(ej);
+							}
+						}
+						for(int i =0;i<nivel;i++)
+							System.out.print(" ");	
+						System.out.println(op + "- ");
+						
+						//Imprimimos cada una de las tablas intermedias
+						/*System.out.println("TABLA NUEVA de -" + op + "- para la RECURSIÓN ");
+						System.out.println("------------------");
+						for(Ejemplo ej2 : ejemplos_aux)
+						{
+							for(int i=0; i<ej2.getEjemplo().size(); i++)
+							System.out.print(ej2.getEjemplo().get(i) + ", ");
+							System.out.println();
+						}
+						System.out.println("------------------");*/
+						
+						//llamar a la recursión, con la lista reducida de esa opción
+						// ¡¡¡SIN LA COLUMNA DEL ATRIBUTO SELECCCCCCIONADO!!!
+						ArrayList<String> atributos_aux = (ArrayList<String>)atributos.clone();
+						atributos_aux.remove(atributo_seleccionado);
+						aprenderID3(ejemplos_aux, atributos_aux, nivel+5);
+					}
 					
 				}
 			} 
@@ -118,35 +151,11 @@ public class AlgoritmoID3 {
 		return true;
 	}
 	
-	private double merito(String atributo, int numero_atributo, ArrayList<Ejemplo> ejemplos)
+	private double merito(int numero_atributo, ArrayList<Ejemplo> ejemplos)
 	{
-		//1. HACEMOS UNA LISTA DEL NÚMERO DE OPCIONES DISTINTAS DEL ATRIBUTO
-		ArrayList<String> opciones_atributo = new ArrayList<String>();
-		//añadimos el primer elemento de la lista de ejemplos
-		opciones_atributo.add(ejemplos.get(0).getEjemplo().get(numero_atributo));
 		
-		for(Ejemplo ej : ejemplos)
-		{
-			boolean igual = false;
-			String opcion = "";
-			for(String opc : opciones_atributo)
-			{
-				if(opc.equalsIgnoreCase(ej.getEjemplo().get(numero_atributo)))
-				{
-					igual = true;
-					opcion = opc;
-				}
-				else
-				{
-					opcion = ej.getEjemplo().get(numero_atributo);
-				}
-			}
-			if(!igual && !opcion.equalsIgnoreCase(""))
-			{
-				opciones_atributo.add(opcion);
-			}
-		
-		}
+		//Llamamos a un método para que nos de todas las opciones distintas de este atributo
+		ArrayList<String> opciones_atributo = calcularOpcionesDistintas(numero_atributo, ejemplos);
 		
 		/*
 		 Almacenamos el número de positivos y negativos de la siguiente forma:
@@ -202,6 +211,41 @@ public class AlgoritmoID3 {
 	
 	
 	
+	private ArrayList<String> calcularOpcionesDistintas(int numero_atributo, ArrayList<Ejemplo> ejemplos) {
+		
+		//1. HACEMOS UNA LISTA DEL NÚMERO DE OPCIONES DISTINTAS DEL ATRIBUTO
+		ArrayList<String> opciones_atributo = new ArrayList<String>();
+		//añadimos el primer elemento de la lista de ejemplos
+		opciones_atributo.add(ejemplos.get(0).getEjemplo().get(numero_atributo));
+		
+		for(Ejemplo ej : ejemplos)
+		{
+			boolean igual = false;
+			String opcion = "";
+			for(String opc : opciones_atributo)
+			{
+				if(opc.equalsIgnoreCase(ej.getEjemplo().get(numero_atributo)))
+				{
+					igual = true;
+					opcion = opc;
+				}
+				else
+				{
+					opcion = ej.getEjemplo().get(numero_atributo);
+				}
+			}
+			if(!igual && !opcion.equalsIgnoreCase(""))
+			{
+				opciones_atributo.add(opcion);
+			}
+		
+		}
+		
+		return opciones_atributo;
+	}
+
+
+
 	private int calcularPositivosNegativos(String opcion_atributo, int numero_atributo,  ArrayList<Ejemplo>ejemplos, String opcion)
 	{
 		int correctos = 0;
