@@ -33,5 +33,8 @@ public final class Constantes {
 	
 	public static String RUTA_ATRIBUTOS = "documentacion/AtributosJuego.txt";
 	public static String RUTA_JUEGO = "documentacion/Juego.txt";
+	public static String RUTA_TEST1 = "documentacion/Test1Juego.txt";
+	public static String RUTA_TEST2 = "documentacion/Test2Juego.txt";
+	public static String RUTA_TEST3 = "documentacion/Test3Juego.txt";
 	public static String SEPARACION= ",";
 }

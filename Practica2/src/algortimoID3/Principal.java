@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import fichero.Fichero;
 import Constantes.Constantes;
-import arbolStackOverflow.TreeNode;
 
 public class Principal {
 
@@ -31,30 +30,28 @@ public class Principal {
 		}
 
 		AlgoritmoID3 clasificacion = new AlgoritmoID3();
-		clasificacion.aprenderID3(ejemplos, atributos, 0, new Ejemplo(atributos_separados.length-1));
+		clasificacion.aprenderID3(ejemplos, atributos, atributos, 0, new Ejemplo(atributos_separados.length-1));
 
-		Ejemplo ejemploConcreto = new Ejemplo("lluvioso,templado,alta,verdad,??");
-		clasificacion.resuelve(ejemploConcreto);
+		System.out.println();
+		System.out.println(" --- TABLA DE REGLAS --- ");
 		
+		clasificacion.imprimirReglas();
+		System.out.println();
 		
+		String [] test;
+		Ejemplo ejemploConcreto;
+		//Analizamos varios ejemplos concretos:
+		test = f.leerFichero(Constantes.RUTA_TEST1);	
+		ejemploConcreto = new Ejemplo(test[0]);
+		System.out.println("RESULTADO TEST 1: " + clasificacion.resuelve(ejemploConcreto));
 		
+		test = f.leerFichero(Constantes.RUTA_TEST2);	
+		ejemploConcreto = new Ejemplo(test[0]);
+		System.out.println("RESULTADO TEST 2: " + clasificacion.resuelve(ejemploConcreto));
 		
-		
-		/*
-		TreeNode<String> root = new TreeNode<String>("raiz");
-		{
-		    TreeNode<String> node0 = root.addChild("node0");
-		    TreeNode<String> node1 = root.addChild("node1");
-		    TreeNode<String> node2 = root.addChild("node2");
-		    {
-		        TreeNode<String> node20 = node2.addChild(null);
-		        TreeNode<String> node21 = node2.addChild("node21");
-		        {
-		            TreeNode<String> node210 = node20.addChild("node210");
-		        }
-		    }
-		}*/
-
+		test = f.leerFichero(Constantes.RUTA_TEST3);	
+		ejemploConcreto = new Ejemplo(test[0]);
+		System.out.println("RESULTADO TEST 3: " + clasificacion.resuelve(ejemploConcreto));
 	}
 
 }
