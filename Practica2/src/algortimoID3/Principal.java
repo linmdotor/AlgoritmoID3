@@ -57,7 +57,7 @@ public class Principal {
 		String [] test;
 		Ejemplo ejemploConcreto;
 		
-		for(int i=1; i<args.length; i++)
+		for(int i=2; i<args.length; i++)
 		{
 			test = f.leerFichero(args[i]);	
 			ejemploConcreto = new Ejemplo(test[0]);
