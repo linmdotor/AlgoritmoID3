@@ -9,7 +9,7 @@ public class Principal {
 
 	/**
 	 * Clase principal
-	 * IMPORTANTE llamar al principal pasándole como argumentos en este orden:
+	 * IMPORTANTE llamar al principal pasï¿½ndole como argumentos en este orden:
 	 * - ruta del fichero de ATRIBUTOS
 	 * - ruta del fichero de JUEGO (casos de entrenamiento)
 	 * - rutas de los ficheros de TEST (todas las que se deseen)
@@ -52,12 +52,12 @@ public class Principal {
 		System.out.println();
 		
 		
-		//Analizamos los ejemplos concretos pasados como parámetro:
+		//Analizamos los ejemplos concretos pasados como parï¿½metro:
 		System.out.println(" ------- TEST DE CORRECION ------- ");
 		String [] test;
 		Ejemplo ejemploConcreto;
 		
-		for(int i=2; i<args.length; i++)
+		for(int i=1; i<args.length; i++)
 		{
 			test = f.leerFichero(args[i]);	
 			ejemploConcreto = new Ejemplo(test[0]);
