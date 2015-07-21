@@ -1,12 +1,3 @@
-@relation practica2
-
-@attribute TiempoExterior {soleado, nublado, lluvioso}
-@attribute Temperatura {frio, templado, caluroso}
-@attribute Humedad {normal, alta}
-@attribute Viento {verdad, falso}
-@attribute Jugar {si, no}
-
-@data
 soleado,caluroso,alta,falso,no
 soleado,caluroso,alta,verdad,no
 nublado,caluroso,alta,falso,si

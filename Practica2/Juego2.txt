@@ -1,6 +1,0 @@
-rojo,cuadrado,grande,si
-azul,cuadrado,grande,si
-rojo,redondo,pequeno,no
-verde,cuadrado,pequeno,no
-rojo,redondo,grande,si
-verde,cuadrado,grande,no
